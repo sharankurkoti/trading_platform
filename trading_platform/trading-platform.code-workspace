@@ -1,0 +1,12 @@
+{
+    "folders": [
+        {"path": "."},
+        {"path": "api-gateway"},
+        {"path": "user-service"},
+        {"path": "auth-service"},
+        {"path": "loc-service"},
+        {"path": "trade-exchange-service"},
+        {"path": "finance-service"}
+    ],
+    "settings": {}
+}
