@@ -52,3 +52,42 @@ jobs:
       - name: Docker Compose Down
         run: |
           docker-compose -f trading_platform/docker-compose.yml down
+
+  deploy:
+    needs: build-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to production server (placeholder)
+        run: |
+          echo "Deploying to production..."
+          # Add your deployment script here (e.g., SSH, rsync, kubectl, etc.)
+
+  notify:
+    needs: [build-test, deploy]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notify on Slack
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      - name: Notify on Email
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.example.com
+          server_port: 587
+          username: ${{ secrets.SMTP_USERNAME }}
+          password: ${{ secrets.SMTP_PASSWORD }}
+          subject: GitHub Actions CI/CD Notification
+          to: your@email.com
+          from: github-actions@example.com
+          body: |
+            CI/CD pipeline completed for ${{ github.repository }}.
+            Status: ${{ job.status }}
+            Commit: ${{ github.sha }}
+            Workflow: ${{ github.workflow }}
+            See details at ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
