@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trading-platform
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: trading-platform
+  template:
+    metadata:
+      labels:
+        app: trading-platform
+    spec:
+      containers:
+        - name: loc-service
+          image: {{ .Values.microservices.locService.image }}
+          ports:
+            - containerPort: {{ .Values.microservices.locService.port }}
+        - name: trade-exchange-service
+          image: {{ .Values.microservices.tradeExchangeService.image }}
+          ports:
+            - containerPort: {{ .Values.microservices.tradeExchangeService.port }}
+        - name: user-service
+          image: {{ .Values.microservices.userService.image }}
+          ports:
+            - containerPort: {{ .Values.microservices.userService.port }}
+        - name: finance-service
+          image: {{ .Values.microservices.financeService.image }}
+          ports:
+            - containerPort: {{ .Values.microservices.financeService.port }}

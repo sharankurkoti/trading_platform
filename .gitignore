@@ -1,3 +1,23 @@
+# Virtual environments
 .venv/
+.env/
+.env
+
+# Python cache
 __pycache__/
 *.pyc
+
+# Python artifacts
+*.egg-info/
+*.sqlite3
+
+# Build outputs
+dist/
+build/
+
+# IDE/editor configs
+.vscode/
+.idea/
+
+# macOS metadata
+.DS_Store

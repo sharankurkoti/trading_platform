@@ -1,0 +1,78 @@
+/* LOCService.css */
+
+.loc-container {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #f8fafc;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.loc-container h1 {
+  color: #1e293b;
+  text-align: center;
+}
+
+.form-step {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+input {
+  padding: 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+button {
+  background-color: #2563eb;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: fit-content;
+  align-self: flex-end;
+}
+
+button:hover {
+  background-color: #1d4ed8;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+}
+
+.modal-window {
+  width: 80vw;
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  position: relative;
+  min-height: 80vh;
+  font-family: Arial, sans-serif;
+}
+
+.close-button {
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  font-size: 1.8rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #555;
+}
+
+.close-button:hover {
+  color: #000;
+}

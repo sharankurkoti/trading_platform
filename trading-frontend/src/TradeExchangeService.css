@@ -1,0 +1,80 @@
+.manual-trade-container {
+  max-width: 700px;
+  margin: auto;
+  padding: 2rem;
+  font-family: Arial, sans-serif;
+}
+
+.trade-step {
+  background: #f4f8fc;
+  border: 1px solid #cfe2ff;
+  padding: 1.5rem;
+  margin-top: 1rem;
+  border-radius: 8px;
+}
+
+.trade-step h2 {
+  color: #007bff;
+}
+
+.trade-step label {
+  display: block;
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
+.trade-step input,
+.trade-step select {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 4px;
+}
+
+.trade-step button {
+  margin-top: 1rem;
+  padding: 0.7rem 1.2rem;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  margin-right: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.trade-step button:hover {
+  background-color: #0056b3;
+}
+
+.trade-complete {
+  background-color: #e6ffe6;
+  border-color: #a0e6a0;
+}
+
+.modal-window {
+  width: 80vw;
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  position: relative;
+  min-height: 80vh;
+  font-family: Arial, sans-serif;
+}
+
+.close-button {
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  font-size: 1.8rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #555;
+}
+
+.close-button:hover {
+  color: #000;
+}
+

@@ -1,0 +1,33 @@
+# version: "3.8"
+services:
+  gateway:
+    build: ./api-gateway
+    ports:
+      - "8000:8000"
+  loc-service:
+    build: ./loc-service
+    ports:
+      - "8001:8000"
+    depends_on:
+      - postgres
+    entrypoint: ["/wait-for-it.sh", "postgres:5432","-t","30", "--", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+  finance-service:
+    build: ./finance-service
+    ports:
+      - "8002:8000"
+    depends_on:
+      - postgres
+    entrypoint: ["/wait-for-it.sh", "postgres:5432","-t","30", "--", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+  trade-exchange-service:
+    build: ./trade-exchange-service
+    ports:
+      - "8003:8000"  # Host port 8003 -> Container port 8000
+    depends_on:
+      - postgres
+    entrypoint: ["/wait-for-it.sh", "postgres:5432","-t","30", "--", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: trading
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: tradingdb

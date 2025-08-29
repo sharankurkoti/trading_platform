@@ -1,0 +1,45 @@
+# Default values for trading-platform.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: sharankurkoti/trading-platform
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+
+postgresql:
+  enabled: true
+  auth:
+    username: trading
+    password: secret
+    database: tradingdb
+
+microservices:
+  locService:
+    image: sharankurkoti/loc-service:latest
+    port: 8001
+  tradeExchangeService:
+    image: sharankurkoti/trade-exchange-service:latest
+    port: 8003
+  userService:
+    image: sharankurkoti/user-service:latest
+    port: 8002
+  financeService:
+    image: sharankurkoti/finance-service:latest
+    port: 8004
+
+volumeMounts:
+  - name: firebase-key-volume
+    mountPath: /app/secrets
+    readOnly: true
+
+volumes:
+  - name: firebase-key-volume
+    secret:
+      secretName: firebase-key

@@ -1,0 +1,93 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: trading
+          POSTGRES_PASSWORD: secret
+          POSTGRES_DB: tradingdb
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - name: Install pipenv
+        run: pip install pipenv
+      - name: Install dependencies (all services)
+        run: |
+          pip install -r trading_platform/loc-service/requirements.txt
+          pip install -r trading_platform/trade-exchange-service/requirements.txt
+          pip install -r trading_platform/finance-service/requirements.txt
+          pip install -r trading_platform/user-service/requirements.txt
+      - name: Run tests (if any)
+        run: |
+          if [ -d tests ]; then pytest tests; else echo 'No tests directory'; fi
+      - name: Lint (flake8)
+        run: |
+          pip install flake8
+          flake8 trading_platform/ --count --select=E9,F63,F7,F82 --show-source --statistics || true
+      - name: Docker Compose Build
+        run: |
+          docker-compose -f trading_platform/docker-compose.yml build
+      - name: Docker Compose Up (smoke test)
+        run: |
+          docker-compose -f trading_platform/docker-compose.yml up -d
+          sleep 30
+          docker-compose -f trading_platform/docker-compose.yml ps
+      - name: Docker Compose Down
+        run: |
+          docker-compose -f trading_platform/docker-compose.yml down
+
+  deploy:
+    needs: build-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to production server (placeholder)
+        run: |
+          echo "Deploying to production..."
+          # Add your deployment script here (e.g., SSH, rsync, kubectl, etc.)
+
+  notify:
+    needs: [build-test, deploy]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notify on Slack
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      - name: Notify on Email
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.example.com
+          server_port: 587
+          username: ${{ secrets.SMTP_USERNAME }}
+          password: ${{ secrets.SMTP_PASSWORD }}
+          subject: GitHub Actions CI/CD Notification
+          to: your@email.com
+          from: github-actions@example.com
+          body: |
+            CI/CD pipeline completed for ${{ github.repository }}.
+            Status: ${{ job.status }}
+            Commit: ${{ github.sha }}
+            Workflow: ${{ github.workflow }}
+            See details at ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
