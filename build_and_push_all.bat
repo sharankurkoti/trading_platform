@@ -5,7 +5,7 @@ REM Set your Docker Hub username
 set USERNAME=sharankurkoti
 
 REM Set the base directory for your services
-set BASE_DIR=E:\TradeProject1\trading-platform
+set BASE_DIR=E:\TradeProject1\trading-platform\trading-backend
 
 REM List of service folders (must match folder names)
 set SERVICES=loc-service trade-exchange-service user-service finance-service

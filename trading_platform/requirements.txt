@@ -1,1 +1,0 @@
-# Shared Python dependencies for the trading platform

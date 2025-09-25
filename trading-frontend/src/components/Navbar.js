@@ -1,13 +1,21 @@
-// src/components/Navbar.js
-import React from 'react';
-//import { Link } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 import './Navbar.css';
 
 const Navbar = () => {
+  const { logout } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login', { replace: true });
+  };
+
   return (
     <nav className="navbar">
       <div className="navbar-logo">
-        <a href="/" className="nav-title">TradeX</a>
+        <a href="/" className="nav-title">Digital Trading</a>
       </div>
       <div className="navbar-links">
         <button 
@@ -54,6 +62,13 @@ const Navbar = () => {
           className="nav-link"
         >
           Trade Exchange
+        </button>
+
+        <button
+          onClick={handleLogout}
+          className="nav-link logout-button"
+        >
+          Logout
         </button>
       </div>
     </nav>

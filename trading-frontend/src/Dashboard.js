@@ -9,7 +9,7 @@ const Dashboard = () => {
   
   return (
     <div style={styles.container}>
-      <h1 style={styles.title}>Welcome to TradeX</h1>
+      <h1 style={styles.title}>TradeX</h1>
       <p style={styles.subtitle}>
         Your gateway to secure, smart, and global trading.
       </p>

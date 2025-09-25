@@ -21,3 +21,5 @@ build/
 
 # macOS metadata
 .DS_Store
+
+echo ".env" >> .gitignore

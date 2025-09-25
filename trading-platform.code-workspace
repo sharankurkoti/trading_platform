@@ -1,12 +1,11 @@
 {
     "folders": [
         {"path": "."},
-        {"path": "api-gateway"},
-        {"path": "user-service"},
-        {"path": "auth-service"},
-        {"path": "loc-service"},
-        {"path": "trade-exchange-service"},
-        {"path": "finance-service"}
+        {"path": "trading-backend/api-gateway"},
+        {"path": "trading-backend/user-service"},
+        {"path": "trading-backend/loc-service"},
+        {"path": "trading-backend/trade-exchange-service"},
+        {"path": "trading-backend/finance-service"}
     ],
     "settings": {}
 }

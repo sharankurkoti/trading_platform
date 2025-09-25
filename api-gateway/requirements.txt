@@ -1,3 +1,0 @@
-fastapi
-uvicorn
-httpx  # if calling other services

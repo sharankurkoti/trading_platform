@@ -1,3 +1,0 @@
-# Example microservice dependencies
-fastapi
-uvicorn
