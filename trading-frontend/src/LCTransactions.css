@@ -1,0 +1,64 @@
+.lc-table-container {
+  padding: 2rem;
+  background: #f7f8fa;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.table-header h2 {
+  margin: 0;
+}
+
+.table-header button {
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+.table-header button:hover {
+  background: #0056b3;
+}
+
+.lc-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+}
+
+.lc-table th,
+.lc-table td {
+  border: 1px solid #ddd;
+  padding: 0.75rem;
+  text-align: left;
+}
+
+.lc-table th {
+  background-color: #f1f1f1;
+}
+
+.status {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.status.issued {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.status.closed {
+  background: #d4edda;
+  color: #155724;
+}

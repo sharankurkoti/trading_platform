@@ -1,17 +1,14 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
 from sqlalchemy.orm import declarative_base, mapped_column
 from sqlalchemy import Integer, String, Float, DateTime, select
-import asyncio
-from datetime import datetime, timedelta
+from datetime import datetime
 from tenacity import retry, wait_fixed, stop_after_attempt
 from fastapi.middleware.cors import CORSMiddleware
 
-app=FastAPI()
-
-DATABASE_URL = "postgresql+asyncpg://trading:secret@postgres:5432/tradingdb"
+DATABASE_URL = "postgresql+asyncpg://trading:secret@postgres:5432/trading"
 engine = create_async_engine(DATABASE_URL, echo=True)
 SessionLocal = async_sessionmaker(engine, expire_on_commit=False)
 Base = declarative_base()
@@ -21,9 +18,13 @@ async def try_connect():
     async with engine.begin() as conn:
         await conn.run_sync(lambda conn: None)
 
+app = FastAPI()
+
 @app.on_event("startup")
 async def on_startup():
     await try_connect()
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
 
 class CreditLine(Base):
     __tablename__ = "credit_lines"
@@ -50,14 +51,17 @@ class CreditLineOut(BaseModel):
     repaid_amount: float
 
     class Config:
-         from_attributes = True  # Instead of orm_mode = True
+        from_attributes = True
 
-app = FastAPI()
-
-@app.on_event("startup")
-async def on_startup():
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
+# CORS
+origins = ["http://localhost:3000"]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
 
 @app.get("/")
 def root():
@@ -97,27 +101,10 @@ async def repay_credit(credit_id: int, amount: float):
         await session.commit()
         return {"credit_id": credit_id, "repaid_amount": credit.repaid_amount}
 
-# Placeholder for risk scoring and automated disbursement
 @app.get("/credit-lines/{credit_id}/risk-score")
 async def risk_score(credit_id: int):
-    # In real app, call external API or ML model
     return {"credit_id": credit_id, "risk_score": 0.8}
 
-# Allow React frontend to talk to this API
-origins = [
-    "http://localhost:3000",  # React dev server
-    # Add other origins if needed (e.g., deployed frontend)
-]
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,            # Accept requests from these origins
-    allow_credentials=True,
-    allow_methods=["*"],              # Allow all HTTP methods (GET, POST, etc.)
-    allow_headers=["*"],              # Allow all headers
-)
-
-# Example route
 @app.get("/ping")
 async def ping():
     return {"message": "pong"}
